@@ -90,7 +90,7 @@ namespace AirplaneCrash.Server.Battle
         {
             if (!gameUser.Airplane.Any())
                 return;
-            if (gameUser.Airplane.Count() != 3)
+            if (gameUser.Airplane.Count() != roundAirplaneCount)
                 return;
             if (!battleGames.ContainsKey(gameUser.GameId))
                 return;
@@ -118,11 +118,11 @@ namespace AirplaneCrash.Server.Battle
             battleGames[gameUser.GameId].Status = GameStatus.Running;
 
             //设置一个先手玩家
-            int userNumber = new Random().Next(0,1);
+            int userNumber = new Random().Next(0, 1);
             battleGames[gameUser.GameId].CurrentUser = battleGames[gameUser.GameId].BattleUsers.Skip(userNumber).FirstOrDefault();
 
 
-                //发送到用户信息通知开局
+            //发送到用户信息通知开局
             if (ChangeHandle != null)
                 ChangeHandle(battleGames[gameUser.GameId]);
 
@@ -143,7 +143,29 @@ namespace AirplaneCrash.Server.Battle
             if (battleGames[choice.GameId].Status != GameStatus.Running)
                 return;
 
-
+            //用户选择轰炸
+            if (choice.IsClick)
+            {
+                if(battleGames[choice.GameId].CurrentUser.UserSysNo == choice.UserSysNo)
+                {
+                    //是该用户回合,判断是否命中
+                    var targetValue = battleGames[choice.GameId].UserAirplane.Where(s => s.Key != choice.UserSysNo).First().Value;
+                    if(targetValue.Any())
+                    {
+                        foreach (BattleAirplane item in targetValue)
+                        {
+                            foreach (var location in item.AirPlanePositions)
+                            {
+                                if(location.LocationX == choice.LocationX && location.LocationY == choice.LocationY)
+                                {
+                                    location.IsCrash = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
 
 
 

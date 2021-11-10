@@ -31,6 +31,11 @@ namespace AirplaneCrash.Server.Entity
         /// </summary>
         public AirplanePosition Position { get; set; }
 
+        /// <summary>
+        /// 是否被摧毁
+        /// </summary>
+        public bool IsCrash { get; set; }
+
     }
 
 
