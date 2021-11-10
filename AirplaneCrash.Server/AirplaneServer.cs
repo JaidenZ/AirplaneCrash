@@ -21,7 +21,20 @@
         internal AirplaneServer()
         {
             BattleContainer.GetInstance().ChangeHandle += AirplaneServer_ChangeHandle;
+            BattleContainer.GetInstance().UserChoiceHandle += AirplaneServer_UserChoiceHandle;
 
+
+        }
+
+        private void AirplaneServer_UserChoiceHandle(BattleUser sendBattleUser, BattleGameUserChoice userChoice)
+        {
+            if (sendBattleUser == null)
+                return;
+            if (userChoice == null)
+                return;
+
+            //通知目标用户 选择数据
+            SendMessage(sendBattleUser.IpAddress, MessageType.TargetChoice, userChoice);
 
         }
 
@@ -100,7 +113,6 @@
                         BattleUser heart = (BattleUser)JsonConvert.DeserializeObject(entity.Message);
                         heart.LastTime = DateTime.Now;
                         BattleContainer.GetInstance().AddBattleUser(heart);
-
                         //回复
                         SendMessage(sockect.ConnectionInfo.ClientIpAddress, MessageType.HeartBeat, heart);
                         break;
@@ -114,30 +126,21 @@
                         user.BattleSocre = 0;
                         user.LastTime = DateTime.Now;
                         BattleContainer.GetInstance().AddBattleUser(user);
-
                         //回复
                         SendMessage(sockect.ConnectionInfo.ClientIpAddress, MessageType.Login, user);
                         break;
                     case MessageType.Prepare://用户准备 
-
                         BattleUser prepare = (BattleUser)JsonConvert.DeserializeObject(entity.Message);
                         BattleContainer.GetInstance().ChangeBattleUserStatus(prepare);
-
                         break;
                     case MessageType.AirPlaneData://飞机数据
-
                         BattleGameUser gameuser = (BattleGameUser)JsonConvert.DeserializeObject(entity.Message);
-
                         BattleContainer.GetInstance().RefreshBattleGameUser(gameuser);
-
                         break;
-                    case MessageType.TargetChoice:
-
+                    case MessageType.TargetChoice://选择数据
                         BattleGameUserChoice choice = (BattleGameUserChoice)JsonConvert.DeserializeObject(entity.Message);
-                        
-
+                        BattleContainer.GetInstance().RefreshBattleGameCrash(choice);
                         break;
-
                     default:
                         break;
                 }
@@ -146,8 +149,6 @@
             {
                 Console.WriteLine($"接受数据异常:{ex.Message}");
             }
-
-          
         }
 
 

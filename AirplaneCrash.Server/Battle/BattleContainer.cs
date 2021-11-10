@@ -26,7 +26,7 @@ namespace AirplaneCrash.Server.Battle
 
         internal BattleContainer()
         {
-            Thread th = new Thread(() =>
+            Thread gameThread = new Thread(() =>
             {
                 while (true)
                 {
@@ -34,7 +34,19 @@ namespace AirplaneCrash.Server.Battle
                     Thread.Sleep(1000 * 2);
                 }
             });
-            th.Start();
+            gameThread.Start();
+
+
+            Thread hearThread = new Thread(() =>
+            {
+                while (true)
+                {
+                    CheckUserHear();
+                    Thread.Sleep(1000 * 20);
+                }
+
+            });
+            hearThread.Start();
         }
 
         public static BattleContainer GetInstance()
@@ -96,12 +108,40 @@ namespace AirplaneCrash.Server.Battle
                 return;
             if (battleGames[gameUser.GameId] == null)
                 return;
-            if (battleGames[gameUser.GameId].Status != GameStatus.Prepared)
+            //不在准备阶段与对局结束阶段
+            if (battleGames[gameUser.GameId].Status != GameStatus.Prepared && battleGames[gameUser.GameId].Status != GameStatus.RoundOver)
                 return;
 
 
             if (!battleGames[gameUser.GameId].UserAirplane.ContainsKey(gameUser.UserSysNo))
                 return;
+
+
+            #region 校验飞机位置数据
+            foreach (var item in gameUser.Airplane)
+            {
+                if (!item.AirPlanePositions.Any())
+                {
+                    return;
+                }
+
+                foreach (var position in item.AirPlanePositions)
+                {
+                    if (string.IsNullOrEmpty(position.LocationX))
+                    {
+                        return;
+                    }
+                    if (string.IsNullOrEmpty(position.LocationY))
+                    {
+                        return;
+                    }
+                }
+            }
+            #endregion
+
+
+
+
             battleGames[gameUser.GameId].UserAirplane[gameUser.UserSysNo] = gameUser.Airplane;
 
             bool gameStart = true;
@@ -135,6 +175,10 @@ namespace AirplaneCrash.Server.Battle
         public void RefreshBattleGameCrash(BattleGameUserChoice choice)
         {
             if (choice == null)
+                return;
+            if (string.IsNullOrEmpty(choice.LocationX))
+                return;
+            if (string.IsNullOrEmpty(choice.LocationY))
                 return;
             if (!battleGames.ContainsKey(choice.GameId))
                 return;
@@ -180,7 +224,15 @@ namespace AirplaneCrash.Server.Battle
 
                         if(targetValue.Any(s=>s.IsCrash != false))
                         {
+                            //对局结束
                             battleGames[choice.GameId].Status = GameStatus.RoundOver;
+                            battleGames[choice.GameId].Round++;
+
+                            //游戏结束
+                            if(battleGames[choice.GameId].Round >= roundCount)
+                            {
+                                battleGames[choice.GameId].Status = GameStatus.Over;
+                            }
                         }
                     }
                     //变更选手
@@ -266,6 +318,27 @@ namespace AirplaneCrash.Server.Battle
 
         }
 
+
+        private void CheckUserHear()
+        {
+            if (allBattleUsers.Count == 0)
+                return;
+
+
+            foreach (var item in allBattleUsers)
+            {
+                if((DateTime.Now - item.LastTime).TotalSeconds > 60)
+                {
+                    
+
+                    break;
+                }
+
+
+            }
+
+
+        }
 
     }
 }
