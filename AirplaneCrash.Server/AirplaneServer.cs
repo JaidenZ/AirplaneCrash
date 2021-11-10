@@ -8,7 +8,7 @@
     using Fleck;
     using Entity;
     using Newtonsoft.Json;
-
+    using System.Linq;
     internal class AirplaneServer
     {
 
@@ -30,9 +30,9 @@
             if (game == null)
                 return;
 
-            //通知两个用户准备 发送游戏数据
-            SendMessage(game.User1.IpAddress, MessageType.GameData, game);
-            SendMessage(game.User2.IpAddress, MessageType.GameData, game);
+            //通知两个用户 发送游戏数据
+            var ipaddressList = game.BattleUsers.Select(s=>s.IpAddress).ToList();
+            SendMessage(ipaddressList, MessageType.GameData, game);
 
         }
 
@@ -148,6 +148,17 @@
             }
 
           
+        }
+
+
+        private void SendMessage<T>(List<string> ipAddresss, MessageType type, T data) where T : class
+        {
+
+            for (int i = 0; i < ipAddresss.Count; i++)
+            {
+                SendMessage(ipAddresss[i], type, data);
+            }
+
         }
 
         private void SendMessage<T>(string ipAddresss,MessageType type,T data) where T : class

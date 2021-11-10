@@ -51,11 +51,6 @@ namespace AirplaneCrash.Server.Entity
         public bool IsCrash { get; set; }
 
         /// <summary>
-        /// 分数
-        /// </summary>
-        public int Score { get; set; }
-
-        /// <summary>
         /// 飞机部位
         /// </summary>
         public List<AirplaneEntity> AirPlanePositions { get; set; }

@@ -143,14 +143,18 @@ namespace AirplaneCrash.Server.Battle
             if (battleGames[choice.GameId].Status != GameStatus.Running)
                 return;
 
+            var targetUser = battleGames[choice.GameId].BattleUsers.Where(s => s.UserSysNo != choice.UserSysNo).First();
+
+
             //用户选择轰炸
             if (choice.IsClick)
             {
                 if(battleGames[choice.GameId].CurrentUser.UserSysNo == choice.UserSysNo)
                 {
                     //是该用户回合,判断是否命中
+
                     var targetValue = battleGames[choice.GameId].UserAirplane.Where(s => s.Key != choice.UserSysNo).First().Value;
-                    if(targetValue.Any())
+                    if (targetValue.Any())
                     {
                         foreach (BattleAirplane item in targetValue)
                         {
@@ -159,21 +163,47 @@ namespace AirplaneCrash.Server.Battle
                                 if(location.LocationX == choice.LocationX && location.LocationY == choice.LocationY)
                                 {
                                     location.IsCrash = true;
+                                    if(location.Position == AirplanePosition.Head)
+                                    {
+                                        item.IsCrash = true;
+                                        targetUser.BattleSocre += 100;
+                                    }
+                                    else
+                                    {
+                                        targetUser.BattleSocre += 20;
+                                    }
                                     break;
                                 }
                             }
                         }
+
+
+                        if(targetValue.Any(s=>s.IsCrash != false))
+                        {
+                            battleGames[choice.GameId].Status = GameStatus.RoundOver;
+                        }
                     }
+                    //变更选手
+                    battleGames[choice.GameId].CurrentUser = targetUser;
+
+
+                    //发送到用户信息通知游戏数据
+                    if (ChangeHandle != null)
+                        ChangeHandle(battleGames[choice.GameId]);
+                }
+            }
+            else
+            {
+              
+                //响应用户选择
+                if (UserChoiceHandle != null)
+                {
+                    UserChoiceHandle(targetUser, choice);
                 }
             }
 
 
-
-            //响应用户选择
-            if (UserChoiceHandle != null)
-            {
-                UserChoiceHandle(null, choice);
-            }
+ 
 
         }
 
