@@ -238,6 +238,24 @@ namespace AirplaneCrash.Server.Battle
                     //变更选手
                     battleGames[choice.GameId].CurrentUser = targetUser;
 
+                    if(battleGames[choice.GameId].Status == GameStatus.Over)
+                    {
+                        //重置游戏与用户状态
+                        battleGames[choice.GameId].CurrentUser = null;
+                        foreach (var item in battleGames[choice.GameId].BattleUsers)
+                        {
+                            item.Status = UserStatus.Normal;
+                            foreach (var user in allBattleUsers)
+                            {
+                                if (user.UserSysNo == item.UserSysNo)
+                                {
+                                    user.Status = UserStatus.Normal;
+                                    continue;
+                                }
+                            }
+                        }
+                    }
+
 
                     //发送到用户信息通知游戏数据
                     if (ChangeHandle != null)
