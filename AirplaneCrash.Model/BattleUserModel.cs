@@ -40,12 +40,20 @@ namespace AirplaneCrash.Model
         }
 
 
-        private void UpdateBattleUser(BattleUser user)
+        public void ProcessBattleUserHear(BattleUser user)
         {
             var battlerUser = allBattleUsers.FirstOrDefault(s => s.UserSysNo == user.UserSysNo);
             if (battlerUser == null)
                 return;
-            battlerUser.IpAddress = user.IpAddress;
+
+            battlerUser.LastTime = user.LastTime;
+        }
+
+        public void UpdateBattleUser(BattleUser user)
+        {
+            var battlerUser = allBattleUsers.FirstOrDefault(s => s.UserSysNo == user.UserSysNo);
+            if (battlerUser == null)
+                return;
             battlerUser.NickName = user.NickName;
             battlerUser.LastTime = user.LastTime;
         }
