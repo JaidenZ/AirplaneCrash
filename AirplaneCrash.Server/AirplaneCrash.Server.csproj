@@ -50,6 +50,13 @@
   <ItemGroup>
     <Compile Include="AirplaneServer.cs" />
     <Compile Include="Battle\BattleContainer.cs" />
+    <Compile Include="Core\Component\Contract.cs" />
+    <Compile Include="Core\Hub\HubAttribute.cs" />
+    <Compile Include="Core\Hub\HubContainer.cs" />
+    <Compile Include="Core\Hub\IHub.cs" />
+    <Compile Include="Core\Utilits\AttributeUnit.cs" />
+    <Compile Include="Core\Utilits\ListUnit.cs" />
+    <Compile Include="Data\BattleUserDA.cs" />
     <Compile Include="Entity\AirplaneEntity.cs" />
     <Compile Include="Entity\BattleGame.cs" />
     <Compile Include="Entity\BattleUser.cs" />
@@ -62,8 +69,6 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Data\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
