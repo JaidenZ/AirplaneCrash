@@ -1,8 +1,8 @@
-﻿namespace AirplaneCrash.Server.Entity
+﻿namespace AirplaneCrash.Entity
 {
     using System.ComponentModel;
 
-    internal enum AirplaneDirect
+    public enum AirplaneDirect
     {
         [Description("上")] Top = 0,
         [Description("下")] Down = 1,
@@ -10,7 +10,7 @@
         [Description("右")] Right = 3
     }
 
-    internal enum AirplanePosition
+    public enum AirplanePosition
     {
         [Description("机头")] Head = 0,
         [Description("机身")] Body = 1,
@@ -20,7 +20,7 @@
 
     }
 
-    internal enum UserStatus
+    public enum UserStatus
     {
         [Description("正常")] Normal = 0,
         [Description("等待")] Wait = 1,
@@ -29,7 +29,7 @@
 
     }
 
-    internal enum GameStatus
+    public enum GameStatus
     {
         [Description("预备飞机")] Prepared = 0,
         [Description("暂停")] Pause = 1,
@@ -39,7 +39,7 @@
     }
 
 
-    internal enum MessageType
+    public enum MessageType
     {
         [Description("心跳")] HeartBeat = 0,
         [Description("登录")] Login = 1,

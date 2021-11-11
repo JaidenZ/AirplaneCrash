@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AirplaneCrash.Business
 {
-    public class Class1
+    public class Login
     {
     }
 }

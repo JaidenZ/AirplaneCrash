@@ -6,7 +6,12 @@ using System.Threading.Tasks;
 
 namespace AirplaneCrash.Entity
 {
-    public class Class1
+    public class MessageEntity
     {
+        public MessageType Code { get; set; }
+
+        public string Message { get; set; }
+
     }
+
 }

@@ -1,4 +1,4 @@
-﻿using AirplaneCrash.Server.Core.Hub;
+﻿using AirplaneCrash.Core.Hub;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,13 +12,8 @@ namespace AirplaneCrash.Server
     {
         static void Main()
         {
-
-            Assembly assembly = Assembly.GetEntryAssembly();
-
-            HubContainer.Load(assembly);
-
+            HubContainer.Load(Assembly.Load("AirplaneCrash.Business"));
             AirplaneServer.GetInstance().Start();
-
             Console.ReadKey(false);
         }
     }

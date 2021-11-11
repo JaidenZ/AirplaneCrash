@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AirplaneCrash.Server.Entity
+namespace AirplaneCrash.Entity
 {
-    internal class BattleGame
+    public class BattleGame
     {
 
         public string GameId { get; set; }
@@ -43,7 +43,7 @@ namespace AirplaneCrash.Server.Entity
     }
 
 
-    internal class BattleGameUser
+    public class BattleGameUser
     {
         public string GameId { get; set; }
 
@@ -55,7 +55,7 @@ namespace AirplaneCrash.Server.Entity
 
     }
 
-    internal class BattleGameUserChoice
+    public class BattleGameUserChoice
     {
         public string GameId { get; set; }
 

@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AirplaneCrash.Server.Entity
+namespace AirplaneCrash.Entity
 {
     /// <summary>
     /// 飞机基础信息实体
     /// </summary>
-    internal class AirplaneEntity
+    public class AirplaneEntity
     {
         /// <summary>
         /// 坐标X
@@ -42,7 +42,7 @@ namespace AirplaneCrash.Server.Entity
     /// <summary>
     /// 对局飞机
     /// </summary>
-    internal class BattleAirplane
+    public class BattleAirplane
     {
 
         /// <summary>

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AirplaneCrash.Server.Entity
+namespace AirplaneCrash.Entity
 {
-    internal class BattleUser
+    public class BattleUser
     {
         /// <summary>
         /// 用户编号
