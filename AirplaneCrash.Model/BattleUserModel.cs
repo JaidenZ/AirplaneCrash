@@ -1,9 +1,10 @@
-﻿using AirplaneCrash.Entity;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace AirplaneCrash.Model
+﻿namespace AirplaneCrash.Model
 {
+
+    using AirplaneCrash.Entity;
+    using System.Collections.Generic;
+    using System.Linq;
+
     public class BattleUserModel
     {
 
