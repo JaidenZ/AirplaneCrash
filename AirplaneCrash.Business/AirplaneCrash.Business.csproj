@@ -31,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -41,8 +44,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Login.cs" />
+    <Compile Include="LoginHandle.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AirplaneCrash.Core\AirplaneCrash.Core.csproj">
+      <Project>{5c04e7f6-a392-4818-8d14-8cfb698eab0a}</Project>
+      <Name>AirplaneCrash.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AirplaneCrash.Entity\AirplaneCrash.Entity.csproj">
+      <Project>{b9560762-ada0-4a2e-8f61-5f2b4462f3b0}</Project>
+      <Name>AirplaneCrash.Entity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AirplaneCrash.Model\AirplaneCrash.Model.csproj">
+      <Project>{424a6ce8-2c07-46ca-8d4b-9fc8be868424}</Project>
+      <Name>AirplaneCrash.Model</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

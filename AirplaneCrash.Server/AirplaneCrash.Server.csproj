@@ -70,6 +70,10 @@
       <Project>{b9560762-ada0-4a2e-8f61-5f2b4462f3b0}</Project>
       <Name>AirplaneCrash.Entity</Name>
     </ProjectReference>
+    <ProjectReference Include="..\AirplaneCrash.Model\AirplaneCrash.Model.csproj">
+      <Project>{424a6ce8-2c07-46ca-8d4b-9fc8be868424}</Project>
+      <Name>AirplaneCrash.Model</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

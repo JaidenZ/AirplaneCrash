@@ -1,5 +1,6 @@
 ﻿namespace AirplaneCrash.Entity
 {
+    using AirplaneCrash.Core.Utilits;
     using System.ComponentModel;
 
     public enum AirplaneDirect

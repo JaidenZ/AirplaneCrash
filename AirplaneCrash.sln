@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AirplaneCrash.Core", "Airpl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AirplaneCrash.Entity", "AirplaneCrash.Entity\AirplaneCrash.Entity.csproj", "{B9560762-ADA0-4A2E-8F61-5F2B4462F3B0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AirplaneCrash.Model", "AirplaneCrash.Model\AirplaneCrash.Model.csproj", "{424A6CE8-2C07-46CA-8D4B-9FC8BE868424}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{B9560762-ADA0-4A2E-8F61-5F2B4462F3B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B9560762-ADA0-4A2E-8F61-5F2B4462F3B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B9560762-ADA0-4A2E-8F61-5F2B4462F3B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{424A6CE8-2C07-46CA-8D4B-9FC8BE868424}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{424A6CE8-2C07-46CA-8D4B-9FC8BE868424}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{424A6CE8-2C07-46CA-8D4B-9FC8BE868424}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{424A6CE8-2C07-46CA-8D4B-9FC8BE868424}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -9,6 +9,9 @@
     using Entity;
     using Newtonsoft.Json;
     using System.Linq;
+    using AirplaneCrash.Core.Hub;
+    using AirplaneCrash.Core.Utilits;
+
     internal class AirplaneServer
     {
 
@@ -16,7 +19,7 @@
         private static WebSocketServer server;
 
         private Dictionary<string,IWebSocketConnection> webSockectConnections = new Dictionary<string, IWebSocketConnection>();
-
+        private Dictionary<int, string> socketUsers = new Dictionary<int, string>();
 
         internal AirplaneServer()
         {
@@ -107,6 +110,19 @@
             try
             {
                 MessageEntity entity = (MessageEntity)JsonConvert.DeserializeObject(message);
+
+                IHub<MessageEntity, int> hub = HubContainer.Get<MessageEntity, int>(1000, (int)entity.Code, 0, entity.Code.GetDescription());
+                int userSysNo = hub.Handle(entity);
+                if(socketUsers.ContainsKey(userSysNo))
+                {
+                    socketUsers[userSysNo] = sockect.ConnectionInfo.ClientIpAddress.ToString();
+                }
+                else
+                {
+                    socketUsers.Add(userSysNo, sockect.ConnectionInfo.ClientIpAddress.ToString());
+                }
+
+
                 switch (entity.Code)
                 {
                     case MessageType.HeartBeat:
