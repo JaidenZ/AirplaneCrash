@@ -69,6 +69,19 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\AirplaneCrash.Business\AirplaneCrash.Business.csproj">
+      <Project>{b54b1fa8-b97a-4a53-aa93-bb696ab16407}</Project>
+      <Name>AirplaneCrash.Business</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AirplaneCrash.Core\AirplaneCrash.Core.csproj">
+      <Project>{5c04e7f6-a392-4818-8d14-8cfb698eab0a}</Project>
+      <Name>AirplaneCrash.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AirplaneCrash.Entity\AirplaneCrash.Entity.csproj">
+      <Project>{b9560762-ada0-4a2e-8f61-5f2b4462f3b0}</Project>
+      <Name>AirplaneCrash.Entity</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
