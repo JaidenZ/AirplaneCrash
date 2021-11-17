@@ -83,6 +83,16 @@
             battlerUser.BattleSocre = user.BattleSocre;
         }
 
+        /// <summary>
+        /// 根据用户状态获取用户集合
+        /// </summary>
+        /// <param name="status"></param>
+        /// <returns></returns>
+        public List<BattleUser> GetUserByStatus(UserStatus status)
+        {
+            return allBattleUsers.Where(s=>s.Status == status).ToList();
+        }
+
 
     }
 }

@@ -11,8 +11,9 @@
     using System.Linq;
     using AirplaneCrash.Core.Hub;
     using AirplaneCrash.Core.Utilits;
+    using AirplaneCrash.Model;
 
-    internal class AirplaneServer
+    public class AirplaneServer
     {
 
         private static AirplaneServer _instance;
@@ -21,10 +22,10 @@
         private Dictionary<string,IWebSocketConnection> webSockectConnections = new Dictionary<string, IWebSocketConnection>();
         private Dictionary<int, string> socketUsers = new Dictionary<int, string>();
 
-        internal AirplaneServer()
+        public AirplaneServer()
         {
-            BattleContainer.GetInstance().ChangeHandle += AirplaneServer_ChangeHandle;
-            BattleContainer.GetInstance().UserChoiceHandle += AirplaneServer_UserChoiceHandle;
+            GameModel.Instance.ChangeHandle += AirplaneServer_ChangeHandle;
+            GameModel.Instance.UserChoiceHandle += AirplaneServer_UserChoiceHandle;
 
 
         }
@@ -125,30 +126,7 @@
 
                 switch (entity.Code)
                 {
-                    case MessageType.HeartBeat:
-                        BattleUser heart = (BattleUser)JsonConvert.DeserializeObject(entity.Message);
-                        heart.LastTime = DateTime.Now;
-                        BattleContainer.GetInstance().AddBattleUser(heart);
-                        //回复
-                        SendMessage(sockect.ConnectionInfo.ClientIpAddress, MessageType.HeartBeat, heart);
-                        break;
-                    case MessageType.Login://登录 创建新用户
-                        BattleUser login = (BattleUser)JsonConvert.DeserializeObject(entity.Message);
-                        BattleUser user = new BattleUser();
-                        user.UserSysNo = login.UserSysNo == 0 ? int.Parse(Guid.NewGuid().ToString()) : login.UserSysNo;
-                        user.IpAddress = sockect.ConnectionInfo.ClientIpAddress;
-                        user.NickName = login.NickName;
-                        user.Status = UserStatus.Normal;
-                        user.BattleSocre = 0;
-                        user.LastTime = DateTime.Now;
-                        BattleContainer.GetInstance().AddBattleUser(user);
-                        //回复
-                        SendMessage(sockect.ConnectionInfo.ClientIpAddress, MessageType.Login, user);
-                        break;
-                    case MessageType.Prepare://用户准备 
-                        BattleUser prepare = (BattleUser)JsonConvert.DeserializeObject(entity.Message);
-                        BattleContainer.GetInstance().ChangeBattleUserStatus(prepare);
-                        break;
+                  
                     case MessageType.AirPlaneData://飞机数据
                         BattleGameUser gameuser = (BattleGameUser)JsonConvert.DeserializeObject(entity.Message);
                         BattleContainer.GetInstance().RefreshBattleGameUser(gameuser);
