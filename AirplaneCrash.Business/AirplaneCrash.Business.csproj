@@ -47,6 +47,7 @@
     <Compile Include="AirPlaneDataHandle.cs" />
     <Compile Include="HearBeatHandle.cs" />
     <Compile Include="LoginHandle.cs" />
+    <Compile Include="TargetChoiceHandle.cs" />
     <Compile Include="UserPreparedHandle.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

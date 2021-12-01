@@ -16,14 +16,18 @@
         public BattleUserModel()
         {
 
-            if(_instance == null)
-                _instance = new BattleUserModel();
+
 
         }
 
         public static BattleUserModel Instance
         {
-            get { return _instance; }
+            get
+            {
+                if (_instance == null)
+                    _instance = new BattleUserModel();
+                return _instance;
+            }
         }
 
         public void AddBattleUser(BattleUser user)
@@ -90,7 +94,7 @@
         /// <returns></returns>
         public List<BattleUser> GetUserByStatus(UserStatus status)
         {
-            return allBattleUsers.Where(s=>s.Status == status).ToList();
+            return allBattleUsers.Where(s => s.Status == status).ToList();
         }
 
 

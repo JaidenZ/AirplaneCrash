@@ -26,12 +26,8 @@
 
         private GameModel()
         {
-            if(_instance == null)
-            {
-                _instance = new GameModel();
-            }
 
-            if(gameThread == null)
+            if (gameThread == null)
             {
                 gameThread = new Thread(() =>
                 {
@@ -48,7 +44,13 @@
 
         public static GameModel Instance
         {
-            get { return _instance; }
+            get
+            {
+                if (_instance == null)
+                    _instance = new GameModel();
+
+                return _instance;
+            }
         }
 
         /// <summary>
@@ -151,7 +153,7 @@
                 UpdateBattleGames(game);
                 return;
             }
-                
+
 
             //游戏开始
             game.Status = GameStatus.Running;
@@ -167,6 +169,109 @@
                 ChangeHandle(game);
 
         }
+
+        /// <summary>
+        /// 进行阶段刷新游戏选择轰炸
+        /// </summary>
+        /// <param name="choice"></param>
+        public void RefreshBattleGameCrash(BattleGameUserChoice choice)
+        {
+            if (choice == null)
+                return;
+            if (string.IsNullOrEmpty(choice.LocationX))
+                return;
+            if (string.IsNullOrEmpty(choice.LocationY))
+                return;
+
+
+            var game = battleGames.FirstOrDefault(s => s.GameId == choice.GameId);
+            if (game == null)
+                return;
+            //不在对局阶段
+            if (game.Status != GameStatus.Running)
+                return;
+
+            //目标用户
+            var targetUser = game.BattleUsers.Where(s => s.UserSysNo != choice.UserSysNo).First();
+
+
+            //用户选择轰炸
+            if (choice.IsClick)
+            {
+                if (game.CurrentUser.UserSysNo == choice.UserSysNo)
+                {
+                    //是该用户回合,判断是否命中
+
+                    var targetValue = game.UserAirplane.Where(s => s.Key != choice.UserSysNo).First().Value;
+                    if (targetValue.Any())
+                    {
+                        foreach (BattleAirplane item in targetValue)
+                        {
+                            foreach (var location in item.AirPlanePositions)
+                            {
+                                if (location.LocationX == choice.LocationX && location.LocationY == choice.LocationY)
+                                {
+                                    location.IsCrash = true;
+                                    if (location.Position == AirplanePosition.Head)
+                                    {
+                                        item.IsCrash = true;
+                                        targetUser.BattleSocre += 100;
+                                    }
+                                    else
+                                    {
+                                        targetUser.BattleSocre += 20;
+                                    }
+                                    break;
+                                }
+                            }
+                        }
+
+
+                        if (targetValue.Any(s => s.IsCrash != false))
+                        {
+                            //对局结束
+                            game.Status = GameStatus.RoundOver;
+                            game.Round++;
+
+                            //游戏结束
+                            if (game.Round >= roundCount)
+                            {
+                                game.Status = GameStatus.Over;
+                            }
+                        }
+                    }
+                    //变更选手
+                    game.CurrentUser = targetUser;
+
+                    if (game.Status == GameStatus.Over)
+                    {
+                        //重置游戏与用户状态
+                        game.CurrentUser = null;
+                        foreach (var item in game.BattleUsers)
+                        {
+                            item.Status = UserStatus.Normal;
+                            //变更用户状态
+                            BattleUserModel.Instance.ChangeBattleUserStatus(new BattleUser() { UserSysNo = item.UserSysNo, Status = item.Status });
+                        }
+                    }
+
+                    UpdateBattleGames(game);
+                    //发送到用户信息通知游戏数据
+                    if (ChangeHandle != null)
+                        ChangeHandle(game);
+                }
+            }
+            else
+            {
+                UpdateBattleGames(game);
+                //响应用户选择
+                if (UserChoiceHandle != null)
+                {
+                    UserChoiceHandle(targetUser, choice);
+                }
+            }
+        }
+
 
         private void UpdateBattleGames(BattleGame game)
         {

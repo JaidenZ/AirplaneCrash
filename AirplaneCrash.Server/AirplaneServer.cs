@@ -12,6 +12,7 @@
     using AirplaneCrash.Core.Hub;
     using AirplaneCrash.Core.Utilits;
     using AirplaneCrash.Model;
+    using System.Net;
 
     public class AirplaneServer
     {
@@ -63,8 +64,11 @@
 
         internal void Start()
         {
+            
+            var hostEntry = Dns.GetHostEntry(Dns.GetHostName());
+            var ipv4address = hostEntry.AddressList?.First(s => s.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork);
 
-            server = new WebSocketServer("ws://172.16.160.119:9096");
+            server = new WebSocketServer($"ws://{ipv4address}:9096");
             server.Start(socket =>
             {
                 socket.OnOpen = () => OnConnect(socket);
@@ -121,22 +125,6 @@
                 else
                 {
                     socketUsers.Add(userSysNo, sockect.ConnectionInfo.ClientIpAddress.ToString());
-                }
-
-
-                switch (entity.Code)
-                {
-                  
-                    case MessageType.AirPlaneData://飞机数据
-                        BattleGameUser gameuser = (BattleGameUser)JsonConvert.DeserializeObject(entity.Message);
-                        BattleContainer.GetInstance().RefreshBattleGameUser(gameuser);
-                        break;
-                    case MessageType.TargetChoice://选择数据
-                        BattleGameUserChoice choice = (BattleGameUserChoice)JsonConvert.DeserializeObject(entity.Message);
-                        BattleContainer.GetInstance().RefreshBattleGameCrash(choice);
-                        break;
-                    default:
-                        break;
                 }
             }
             catch (Exception ex)
