@@ -21,14 +21,29 @@
         private static WebSocketServer server;
 
         private Dictionary<string,IWebSocketConnection> webSockectConnections = new Dictionary<string, IWebSocketConnection>();
-        private Dictionary<int, string> socketUsers = new Dictionary<int, string>();
 
         public AirplaneServer()
         {
             GameModel.Instance.ChangeHandle += AirplaneServer_ChangeHandle;
             GameModel.Instance.UserChoiceHandle += AirplaneServer_UserChoiceHandle;
+            BattleUserModel.Instance.BattleUserInfoLogin += Instance_BattleUserInfoLogin; ;
+            BattleUserModel.Instance.BattleUserHearbeat += Instance_BattleUserHearbeat;
+        }
 
+        private void Instance_BattleUserHearbeat(BattleUser user)
+        {
+            if (user == null)
+                return;
 
+            SendMessage(user.IpAddress, MessageType.HeartBeat, user);
+        }
+
+        private void Instance_BattleUserInfoLogin(BattleUser user)
+        {
+            if (user == null)
+                return;
+
+            SendMessage(user.IpAddress, MessageType.Login, user);
         }
 
         private void AirplaneServer_UserChoiceHandle(BattleUser sendBattleUser, BattleGameUserChoice userChoice)
@@ -114,18 +129,10 @@
                 return;
             try
             {
-                MessageEntity entity = (MessageEntity)JsonConvert.DeserializeObject(message);
-
-                IHub<MessageEntity, int> hub = HubContainer.Get<MessageEntity, int>(1000, (int)entity.Code, 0, entity.Code.GetDescription());
+                RequestMessage entity = JsonConvert.DeserializeObject<RequestMessage>(message);
+                entity.RequestIpAddress = sockect.ConnectionInfo.ClientIpAddress;
+                IHub<RequestMessage, int> hub = HubContainer.Get<RequestMessage, int>(1000, (int)entity.Code, 0, entity.Code.GetDescription());
                 int userSysNo = hub.Handle(entity);
-                if(socketUsers.ContainsKey(userSysNo))
-                {
-                    socketUsers[userSysNo] = sockect.ConnectionInfo.ClientIpAddress.ToString();
-                }
-                else
-                {
-                    socketUsers.Add(userSysNo, sockect.ConnectionInfo.ClientIpAddress.ToString());
-                }
             }
             catch (Exception ex)
             {

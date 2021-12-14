@@ -12,6 +12,9 @@
 
         private List<BattleUser> allBattleUsers = new List<BattleUser>();
 
+        public delegate void BattleUserInfoRefreshHandle(BattleUser user);
+        public event BattleUserInfoRefreshHandle BattleUserInfoLogin;//用户信息更新事件
+        public event BattleUserInfoRefreshHandle BattleUserHearbeat;//用户心跳更新事件
 
         public BattleUserModel()
         {
@@ -42,6 +45,9 @@
             {
                 UpdateBattleUser(user);
             }
+
+            if(BattleUserInfoLogin != null)
+                BattleUserInfoLogin(user);
         }
 
 
@@ -52,6 +58,9 @@
                 return;
 
             battlerUser.LastTime = user.LastTime;
+
+            if (BattleUserHearbeat != null)
+                BattleUserHearbeat(battlerUser);
         }
 
         public void UpdateBattleUser(BattleUser user)

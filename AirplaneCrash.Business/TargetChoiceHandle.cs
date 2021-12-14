@@ -7,11 +7,11 @@
     using AirplaneCrash.Core.Hub;
 
     [Hub(Name = "目标选择集线器", Condition1 = 1000, Condition2 = (int)MessageType.TargetChoice, Condition4 = "选择目标")]
-    public class TargetChoiceHandle : IHub<MessageEntity, int>
+    public class TargetChoiceHandle : IHub<RequestMessage, int>
     {
-        public int Handle(MessageEntity obj)
+        public int Handle(RequestMessage obj)
         {
-            BattleGameUserChoice choice = (BattleGameUserChoice)JsonConvert.DeserializeObject(obj.Message);
+            BattleGameUserChoice choice = JsonConvert.DeserializeObject<BattleGameUserChoice>(obj.Message);
             GameModel.Instance.RefreshBattleGameCrash(choice);
 
             return choice.UserSysNo;

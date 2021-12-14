@@ -49,6 +49,7 @@
     <Compile Include="Utilits\AttributeUnit.cs" />
     <Compile Include="Utilits\EnumUnit.cs" />
     <Compile Include="Utilits\ListUnit.cs" />
+    <Compile Include="Utilits\SerialNumberUnit.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

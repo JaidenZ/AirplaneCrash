@@ -10,8 +10,18 @@ namespace AirplaneCrash.Entity
     {
         public MessageType Code { get; set; }
 
+
         public string Message { get; set; }
 
+    }
+
+    public class RequestMessage :MessageEntity
+    {
+
+        /// <summary>
+        /// 请求地址
+        /// </summary>
+        public string RequestIpAddress { get; set; }
     }
 
 }
